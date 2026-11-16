@@ -1,0 +1,255 @@
+/* =====================================================================
+   App.css — تصميم جديد لتطبيق الطقس بدون أي تعديل على ملفات JSX أو JSON
+   (يستهدف نفس الكلاسات الموجودة عندك: counter, card-ar, card-en, content,
+    city-time, city, time, degree-description, tempreture, temdesp, tempDegree)
+   ===================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap');
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: #0a2a6e;                 /* لا وميض أبيض قبل تحميل الخلفية */
+}
+
+body {
+  margin: 0;                           /* كان الهامش الافتراضي 8px سبب الحيلة 97.5vh */
+}
+
+/* ========= الصفحة والخلفية ========= */
+.counter {
+  /* ألوان الخلفية الافتراضية (تتغير حسب الطقس في الأسفل) */
+  --c1: #0052d0;
+  --c2: #2f7bff;
+  --c3: #0a2a6e;
+
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  padding: 1.5rem 1rem;
+  color: #fff;
+  font-family: 'Poppins', 'Noto Kufi Arabic', system-ui, sans-serif;
+  background: linear-gradient(135deg, var(--c1), var(--c2) 50%, var(--c3));
+  background-size: 160% 160%;
+  animation: drift 20s ease-in-out infinite alternate;
+}
+
+@keyframes drift {
+  from { background-position: 0% 0%; }
+  to   { background-position: 100% 100%; }
+}
+
+
+
+
+.counter:has(img[src*='/01d@']) {
+  --c1: #1f6fff; --c2: #4ea7ff; --c3: #8fd3ff;
+} 
+
+.counter:has(img[src*='/01n@']) {
+  --c1: #0b1030; --c2: #1b2160; --c3: #3a3f8f;
+}
+
+.counter:has(img[src*='/02d@'], img[src*='/03d@'], img[src*='/04d@']) {
+  --c1: #4d6a8a; --c2: #7d97b3; --c3: #aebfd0;
+}
+
+.counter:has(img[src*='/02n@'], img[src*='/03n@'], img[src*='/04n@']) {
+  --c1: #1c2638; --c2: #313f58; --c3: #4b5b78;
+}
+
+.counter:has(img[src*='/09'], img[src*='/10']) {
+  --c1: #243448; --c2: #3c5471; --c3: #5a7694;
+}
+
+.counter:has(img[src*='/11']) {
+  --c1: #14172a; --c2: #2c2a49; --c3: #4a4166;
+}
+
+.counter:has(img[src*='/13']) {
+  --c1: #5b83ab; --c2: #8eb1d1; --c3: #c4d8ea;
+}
+
+.counter:has(img[src*='/50']) {
+  --c1: #5b6a76; --c2: #8c9aa5; --c3: #b5c0c8;
+}
+
+/* ========= البطاقة الزجاجية ========= */
+.card-ar,
+.card-en {
+  position: relative;
+  z-index: 1;
+  width: min(92vw, 380px);
+  padding: 1.75rem 1.75rem 1.5rem;
+  border-radius: 28px;
+  background: rgba(12, 24, 56, 0.38);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.28);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  backdrop-filter: blur(20px) saturate(150%);
+  color: #fff;
+  animation: rise 0.6s ease both;
+}
+
+.card-ar { direction: rtl; }
+.card-en { direction: ltr; }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.content {
+  display: grid;
+  gap: 1.1rem;
+}
+
+
+.city-time {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+}
+
+.city-time > div {
+  width: 100%;
+}
+
+.city {
+  margin: 0;
+  font-size: clamp(1.7rem, 7vw, 2rem);
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.time {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 400;
+  opacity: 0.8;
+}
+
+/* الخط الفاصل: يتلاشى من الطرفين */
+.content hr {
+  width: 100%;
+  height: 1px;
+  margin: 0;
+  border: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+}
+
+/* ========= الحرارة والوصف ========= */
+.degree-description {
+  display: grid;
+  justify-items: center;
+  gap: 0.6rem;
+  text-align: center;
+}
+
+.tempreture {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.tempreture h1 {
+  margin: 0;
+  font-size: clamp(3.2rem, 14vw, 4.6rem);
+  font-weight: 700;
+  line-height: 1;
+  direction: ltr;                      
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+}
+
+
+.tempreture:not(:has(img[src])) h1 {
+  font-size: 1.15rem;
+  font-weight: 400;
+  text-shadow: none;
+  direction: inherit;
+}
+
+.tempreture img {
+  width: 6.25rem;
+  height: 6.25rem;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.28), transparent 65%);
+  filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.3));
+}
+
+.tempreture img:not([src]) {
+  display: none;
+}
+
+.temdesp h6 {
+  margin: 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+
+.tempDegree {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.tempDegree h5 {
+  margin: 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.tempDegree p {
+  margin: 0;
+  opacity: 0.45;
+}
+
+.tempDegree h5:first-of-type::before { content: '↓ '; opacity: 0.8; }
+.tempDegree h5:last-of-type::before  { content: '↑ '; opacity: 0.8; }
+
+
+.counter button {
+  position: relative;
+  z-index: 1;
+  width: auto;
+  height: auto;
+  margin: 0;
+  padding: 0.55rem 1.5rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  font: inherit;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.counter button:hover {
+  background: rgba(255, 255, 255, 0.26);
+  transform: translateY(-1px);
+}
+
+.counter button:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 3px;
+}
+
